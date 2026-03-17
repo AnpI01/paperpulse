@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+/* Class-based dark mode: add .dark to <html> to activate dark: utilities */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Smooth transitions for theme changes */
+*, *::before, *::after {
+  transition-property: background-color, border-color, color;
+  transition-duration: 150ms;
+  transition-timing-function: ease;
+}
+
+/* Disable transitions on user interactions to avoid flicker */
+button, a, input, select {
+  transition-duration: 75ms;
+}
+
+/* Custom scrollbar in dark mode */
+:root {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 #f1f5f9;
+}
+.dark {
+  scrollbar-color: #475569 #1e293b;
+}
+
+/* Line clamp utilities */
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}

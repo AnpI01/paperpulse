@@ -1,0 +1,36 @@
+name: Daily Digest
+
+# Disabled by default — enable by uncommenting the schedule trigger.
+# Render Cron Jobs are the primary scheduler; this is a backup.
+on:
+  workflow_dispatch:  # manual trigger only for now
+  # schedule:
+  #   - cron: "0 8 * * *"  # 8 AM UTC daily
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+
+      - name: Run pipeline
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          MY_EMAIL: ${{ secrets.MY_EMAIL }}
+          APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
+          DIGEST_RECIPIENTS: ${{ secrets.DIGEST_RECIPIENTS }}
+        run: |
+          cd backend
+          python -m app.services.pipeline
